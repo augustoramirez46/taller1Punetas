@@ -1,0 +1,115 @@
+package main;
+
+import java.util.Observable;
+import java.util.Observer;
+
+import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PVector;
+
+public class Logica implements Observer {
+
+	PApplet app;
+	Background fondo;
+	Mano mano1;
+	Mano mano2;
+	int timer;
+	int pantalla;
+
+	public Logica(PApplet app) {
+
+		this.app = app;
+		this.fondo = new Background(app);
+		this.mano1 = new Mano(app, 0);
+		this.mano2 = new Mano(app, 1);
+		this.timer = 15;
+		this.pantalla = 0;
+
+	}
+
+	public void pintar() {
+
+		app.background(255);
+		fondo.pintar();
+		mano1.pintar();
+		mano2.pintar();
+
+		this.checarColision(mano1, mano2);
+		this.app.rectMode(PConstants.CORNERS);
+		this.app.noFill();
+		this.app.rect(300, 150, 900, 600);
+		
+
+	}
+
+	public void presionado() {
+
+		if (app.keyCode == 37) {
+			mano1.avanzarDesgraciado();
+
+		}
+		if (app.keyCode == 39) {
+			mano2.avanzarDesgraciado();
+		}
+
+		if (app.keyCode == 10) {
+
+			mano1.recibirMov(mano2.getMov());
+
+		}
+
+		if (app.keyCode == 32) {
+			
+			this.pantalla++;
+			this.fondo.setPantalla(pantalla);
+		}
+	}
+
+	public void aumentarTimer() {
+		for (int i = 0; i < 15; i++) {
+			if (app.frameCount % 60 == 0) {
+
+				this.timer--;
+
+			}
+		}
+
+	}
+
+	public void checarColision(Mano a, Mano b) {
+		PVector aa = a.getPos();
+		PVector bb = b.getPos();
+
+		if (PApplet.dist(aa.x, aa.y, bb.x, bb.y) < 70) {
+			mano1.recibirMov(mano2.getMov());
+			mano2.recibirMov(mano1.getMov());
+		}
+
+	}
+	
+	public void salidoImbecil(Mano a, Mano b) {
+		PVector aa = a.getPos();
+		PVector bb = b.getPos();
+		
+		if (aa.x <= 300 || aa.x >= 900 ||
+			aa.y <= 150 || aa.y >= 600) {
+			
+		}
+		if (centerY <= dia/2 || centerY >= 60-dia/2)
+		
+		this.app.rect(300, 150, 900, 600);
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		final String mensaje = (String) arg1;
+		System.out.println(mensaje);
+		if (mensaje.equals("a")) {
+
+			mano1.avanzarDesgraciado();
+		}
+
+	}
+
+}

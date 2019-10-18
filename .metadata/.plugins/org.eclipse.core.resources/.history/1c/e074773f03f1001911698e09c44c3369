@@ -1,0 +1,149 @@
+package main;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+import processing.core.PVector;
+
+public class Mano extends PApplet {
+
+	private PApplet app;
+	private PImage[] jugador;
+	private PImage pum;
+	private int indice;
+	PVector pos;
+	PVector mov;
+	PVector acceleration;
+	PVector velocidad;
+
+	private boolean avanzando;
+	private int contador;
+	private int velRot;
+
+	private float mass;
+
+	public Mano(PApplet app, int numero) {
+		this.app = app;
+		this.jugador = new PImage[2];
+		this.pum = new PImage();
+
+		this.jugador[0] = this.app.loadImage("./res/char/m1.png");
+		this.jugador[1] = this.app.loadImage("./res/char/m2.png");
+
+		this.indice = numero;
+		this.pum = this.app.loadImage("./res/char/pum.png");
+		this.velRot = 90;
+
+		switch (indice) {
+
+		case 0:
+			this.pos = new PVector(750, 375);
+
+			break;
+
+		case 1:
+			this.pos = new PVector(450, 375);
+			this.velRot *= -1;
+			break;
+
+		}
+
+		this.mov = new PVector(50, 0);
+		this.contador = 0;
+		this.avanzando = false;
+		this.mass = 1;
+		this.acceleration = new PVector(0, 0);
+		this.velocidad = new PVector(0, 0);
+	}
+
+	public void pintar() {
+
+		this.app.imageMode(CENTER);
+
+		this.app.rectMode(CORNERS);
+		this.app.noFill();
+		this.app.rect(300, 150, 900, 600);
+
+		if (avanzando == false) {
+			// this.app.pushMatrix();
+			// this.app.translate(pos.x, pos.y);
+			this.mov.rotate(TWO_PI / velRot);
+			this.app.line(pos.x, pos.y, mov.x + pos.x, mov.y + pos.y);
+			// this.app.popMatrix();
+
+			this.app.pushMatrix();
+			this.app.translate(pos.x, pos.y);
+			float a = (float) (this.mov.heading() + 1.8);
+			this.app.rotate(a);
+			// System.out.println(this.mov.heading());
+			this.app.image(jugador[indice], 0, 0);
+			this.app.popMatrix();
+
+		} else {
+			this.app.pushMatrix();
+			this.app.translate(pos.x, pos.y);
+			float a = (float) (this.mov.heading() + 1.8);
+			this.app.rotate(a);
+			// System.out.println(this.mov.heading());
+			this.app.image(jugador[indice], 0, 0);
+			this.app.popMatrix();
+			this.app.line(pos.x, pos.y, mov.x + pos.x, mov.y + pos.y);
+
+			if (this.app.frameCount % 2 == 0) {
+				this.pos.add(mov.x / 5, mov.y / 5);
+			}
+		}
+		//// con un boolean que avance el desgraciado
+		this.update();
+	}
+
+	public void avanzarDesgraciado() {
+		avanzando = !avanzando;
+
+	}
+
+	public void update() {
+
+		velocidad.add(acceleration);
+		pos.add(velocidad);
+
+		acceleration.mult(0);
+	}
+
+	void applyForce(PVector force) {
+
+		PVector f = PVector.div(force, mass);
+		acceleration.add(f);
+	}
+
+	/*
+	 * class Mover {
+	 * 
+	 * PVector location; PVector velocity; PVector acceleration; The object now has
+	 * mass! float mass;
+	 * 
+	 * Mover() { And for now, we’ll just set the mass equal to 1 for simplicity.
+	 * mass = 1; location = new PVector(30,30); velocity = new PVector(0,0);
+	 * acceleration = new PVector(0,0); }
+	 * 
+	 * Newton’s second law. void applyForce(PVector force) { Receive a force, divide
+	 * by mass, and add to acceleration. PVector f = PVector.div(force,mass);
+	 * acceleration.add(f); }
+	 * 
+	 * void update() { Motion 101 from Chapter 1 velocity.add(acceleration);
+	 * location.add(velocity); Now add clearing the acceleration each time!
+	 * acceleration.mult(0); }
+	 * 
+	 * void display() { stroke(0); fill(175); Scaling the size according to mass.
+	 * ellipse(location.x,location.y,mass*16,mass*16); }
+	 * 
+	 * Somewhat arbitrarily, we are deciding that an object bounces when it hits the
+	 * edges of a window. void checkEdges() { if (location.x > width) { location.x =
+	 * width; velocity.x *= -1; } else if (location.x < 0) { velocity.x *= -1;
+	 * location.x = 0; }
+	 * 
+	 * if (location.y > height) { Even though we said we shouldn't touch location
+	 * and velocity directly, there are some exceptions. Here we are doing so as a
+	 * quick and easy way to reverse the direction of our object when it reaches the
+	 * edge. velocity.y *= -1; location.y = height; } } }
+	 */
+}

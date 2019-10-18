@@ -1,0 +1,39 @@
+package main;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
+public class Background extends PApplet implements Runnable{
+	
+	private PApplet app;
+	private PImage[] fondin;
+	private int pantalla;
+	private int indice;
+	private Runnable a;
+
+	public Background(PApplet app, int numero) {
+		this.app = app;	
+		fondin = new PImage[6];
+		fondin [0]= this.app.loadImage("./res/bgf/Tit.jpg");
+		fondin [1]= this.app.loadImage("./res/bgf/Instr.jpg");
+		fondin [2]= this.app.loadImage("./res/bgf/M0.jpg");
+		fondin [3]= this.app.loadImage("./res/bgf/M1.jpg");
+		fondin [4]= this.app.loadImage("./res/bgf/Gm1.jpg");
+		fondin [5]= this.app.loadImage("./res/bgf/Gm2.jpg");
+		this.pantalla = numero;
+		this.indice = 2;
+		a = new Thread(Runnable);
+	}
+	
+
+	public void pintar() {
+		this.app.image(fondin[pantalla],0, 0);
+	}
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+}

@@ -1,0 +1,103 @@
+package main;
+
+import processing.core.PApplet;
+import processing.core.PVector;
+
+public class Logica implements Runnable {
+
+	PApplet app;
+	Background fondo;
+	Mano mano1;
+	Mano mano2;
+	int timer;
+
+	public Logica(PApplet app) {
+
+		this.app = app;
+		this.fondo = new Background(app, 3);
+		this.mano1 = new Mano(app, 0);
+		this.mano2 = new Mano(app, 1);
+		this.timer = 15;
+
+	}
+
+	public void pintar() {
+
+		app.background(255);
+		fondo.pintar();
+		mano1.pintar();
+		mano2.pintar();
+
+	}
+	
+	
+
+	public void presionado() {
+		System.out.println("jejdjsf");
+		if (app.keyCode == 37) {
+			mano1.avanzarDesgraciado();
+
+		}
+		if (app.keyCode == 39) {
+			mano2.avanzarDesgraciado();
+		}
+		if (app.keyCode == 32) {
+			PVector rebote = new PVector(1, 0);
+
+			PVector mov1 = mano1.getMov();
+			PVector mov2 = mano2.getMov();
+
+			mov1.normalize();
+			mov2.normalize();
+			/*
+			 * mov1.x *= -1; mov1.y *= -1;
+			 * 
+			 * mov2.x *= -1; mov2.y *= -1;
+			 */
+			mano1.applyForce(mov2);
+			mano2.applyForce(mov1);
+
+			float c = (float) 0.01;
+			float normal = 1;
+			float frictionMag = c * normal;
+
+			PVector friction1 = mano1.getVelocidad();
+			friction1.mult(-1);
+			friction1.normalize();
+			friction1.mult(frictionMag);
+
+			PVector friction2 = mano2.getVelocidad();
+			friction2.mult(-1);
+			friction2.normalize();
+			friction2.mult(frictionMag);
+
+			mano1.applyForce(friction1);
+			mano2.applyForce(friction2);
+
+		}
+		System.out.println(app.keyCode); 
+		if (app.keyCode == 13) {
+	
+			mano1.recibirMov(mano2.getMov());
+
+		}
+		
+		
+	}
+
+	@Override
+	public void run() {
+		for (int i = 0; i < 15; i++) {
+			this.timer--;
+		
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+
+	}
+}
