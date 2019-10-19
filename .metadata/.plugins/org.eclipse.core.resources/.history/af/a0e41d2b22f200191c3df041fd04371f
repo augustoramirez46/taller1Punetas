@@ -44,11 +44,9 @@ public class Logica implements Observer {
 			mano2.pintar();
 			this.checarColision(mano1, mano2);
 			this.salidoImbecil(mano1, mano2);
-			this.aumentarTimer();
 		}
 		
 		this.fondo.setPantalla(pantalla);
-
 
 	}
 
@@ -81,14 +79,13 @@ public class Logica implements Observer {
 	}
 
 	public void aumentarTimer() {
-		this.app.text(timer, 700, 620);
-		
+		for (int i = 0; i < 15; i++) {
 			if (app.frameCount % 60 == 0) {
 
 				this.timer--;
 
 			}
-		
+		}
 
 	}
 
@@ -96,19 +93,12 @@ public class Logica implements Observer {
 		PVector aa = a.getPos();
 		PVector bb = b.getPos();
 
-		if (PApplet.dist(aa.x, aa.y, bb.x, bb.y) < 80) {
-			
-			
+		if (PApplet.dist(aa.x, aa.y, bb.x, bb.y) < 70) {
 			mano1.recibirMov(mano2.getMov());
 			mano2.recibirMov(mano1.getMov());
 			
-			
-			
 			System.out.println("Rebote");
-			
 		}
-		
-		
 
 	}
 	

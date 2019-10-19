@@ -81,7 +81,7 @@ public class Logica implements Observer {
 	}
 
 	public void aumentarTimer() {
-		this.app.text(timer, 700, 620);
+		this.app.text(timer, app.width/2, 650);
 		
 			if (app.frameCount % 60 == 0) {
 

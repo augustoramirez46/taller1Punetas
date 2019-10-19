@@ -99,7 +99,7 @@ public class Mano extends PApplet {
 	
 		}
 		//// con un boolean que avance el desgraciado
-
+		this.update();
 		
 		this.otroMover();
 		}
@@ -109,6 +109,14 @@ public class Mano extends PApplet {
 
 	}
 
+	public void update() {
+
+		velocidad.add(acceleration);
+		pos.add(velocidad);
+
+		acceleration.mult(0);
+		
+	}
 
 	public PVector getVelocidad() {
 		return velocidad;
