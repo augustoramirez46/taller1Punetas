@@ -6,9 +6,7 @@ public class Main extends PApplet {
 
 	public static void main(String[] args) {
 		PApplet.main("main.Main");
-		final Comunicacion ref = new Comunicacion();
-        Thread t= new Thread(ref);
-        t.start();
+		
 
 	}
 

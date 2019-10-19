@@ -5,4 +5,5 @@
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="processing.core.PVector"/>
 <fullyQualifiedTypeName name="java.util.Observer"/>
+<fullyQualifiedTypeName name="main.Comunicacion"/>
 </qualifiedTypeNameHistroy>

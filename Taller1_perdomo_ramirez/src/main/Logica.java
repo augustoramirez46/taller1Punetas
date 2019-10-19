@@ -15,9 +15,17 @@ public class Logica implements Observer {
 	Mano mano2;
 	int timer;
 	int pantalla;
+	public Comunicacion com;
 
 	public Logica(PApplet app) {
-
+		
+		com=new Comunicacion();
+		com.addObserver(this);
+		Thread t= new Thread(com);
+		t.start();
+		
+		
+		
 		this.app = app;
 		this.fondo = new Background(app);
 		this.mano1 = new Mano(app, 0);
@@ -43,25 +51,23 @@ public class Logica implements Observer {
 	}
 
 	public void presionado() {
+		if (mano1 != null && mano2 != null && pantalla == 2) {
+			if (app.keyCode == 37) {
+				mano1.avanzarDesgraciado();
 
-		if (app.keyCode == 37) {
-			mano1.avanzarDesgraciado();
-
-		}
-		if (app.keyCode == 39) {
-			mano2.avanzarDesgraciado();
-		}
-
-		if (app.keyCode == 10) {
-
-			mano1.recibirMov(mano2.getMov());
+			}
+			if (app.keyCode == 39) {
+				mano2.avanzarDesgraciado();
+			}
 
 		}
 
 		if (app.keyCode == 32) {
-			
+
 			this.pantalla++;
-			if(pantalla == 4 || pantalla == 3) {
+			
+			
+			if (pantalla == 4 || pantalla == 3) {
 				this.mano1 = new Mano(app, 0);
 				this.mano2 = new Mano(app, 1);
 				this.pantalla = 0;
@@ -90,6 +96,8 @@ public class Logica implements Observer {
 		if (PApplet.dist(aa.x, aa.y, bb.x, bb.y) < 70) {
 			mano1.recibirMov(mano2.getMov());
 			mano2.recibirMov(mano1.getMov());
+			
+			System.out.println("Rebote");
 		}
 
 	}
@@ -122,11 +130,20 @@ public class Logica implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		final String mensaje = (String) arg1;
-		System.out.println(mensaje);
-		if (mensaje.equals("a")) {
+		String mensaje = (String) arg1;
+		mensaje = mensaje.trim();
+		//System.out.println(mensaje);
+		
+		System.out.println("aca");
 
-			mano1.avanzarDesgraciado();
+		System.out.println(mensaje);
+
+		if (mensaje.contains("a")) {
+
+			System.out.println("holi");
+			if (mano1 != null && mano2 != null && pantalla == 2) {
+				mano1.avanzarDesgraciado();
+			}
 		}
 
 	}

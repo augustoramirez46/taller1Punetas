@@ -29,7 +29,7 @@ public class Comunicacion extends Observable implements Runnable{
     if(socket!=null) {
         try {
 
-            cliente = InetAddress.getByName("192.168.100.128");
+            cliente = InetAddress.getByName("192.168.1.8");
 
             while (true) {
                 byte[] buff = new byte[200];
